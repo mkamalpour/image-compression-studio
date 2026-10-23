@@ -4,21 +4,22 @@ A Python desktop workbench for reducing image colors, saving standard JPEGs, and
 
 ## Start on Windows
 
-1. Install Python **3.11**, including Tkinter and the PATH option.
-2. Double-click **run.bat**. First launch creates a local `.venv` and installs the pinned libraries; this setup needs internet access.
+1. Open a terminal and activate an existing compatible Python/Conda environment with NumPy, Pillow, and Tkinter.
+2. Run **run.bat** from that activated terminal. The launcher uses your active environment; it creates no environments and installs nothing.
 3. Use the built-in example, or **Open image**, then choose **Use image-specific palette** or **Compress & compare**.
 
-Later launches reuse the environment. `run.bat --check` checks imports without opening the app. Processing stays local; the application does not upload images, modify originals, or automatically save results.
+Activate an existing environment with NumPy, Pillow, and Tkinter before launching. `run.bat --check` checks imports without opening the app. Processing stays local; the application does not upload images, modify originals, or automatically save results.
 
 Manual setup:
 
 ```powershell
-python -m venv .venv
-.venv\Scripts\python -m pip install -r requirements.txt
-.venv\Scripts\python -m media_studio
+conda activate base  # Or activate another existing compatible environment.
+# Optional dependency setup; requires explicit permission and connectivity.
+python -m pip install -r requirements.txt
+python -m media_studio
 ```
 
-Verified baseline: CPython **3.11.0**, NumPy **2.4.4**, Pillow **12.2.0**, Tcl/Tk **8.6.12**, Windows. On Linux/macOS use `.venv/bin/python`; Tkinter may need installation separately. Those platforms have not been verified. CLI processing does not import Tkinter. No SciPy, browser, web server, or external multimedia executable is required.
+Verified baseline: CPython **3.11.0**, NumPy **2.4.4**, Pillow **12.2.0**, Tcl/Tk **8.6.12**, Windows. On Linux/macOS use `python`; Tkinter may need installation separately. Those platforms have not been verified. CLI processing does not import Tkinter. No SciPy, browser, web server, or external multimedia executable is required.
 
 ## Desktop workflows
 
@@ -92,6 +93,8 @@ The original assignment implementations and datasets are preserved outside this 
 
 ## Verification and limitations
 
-Run `.venv\Scripts\python -X utf8 -m unittest discover -s tests -v`. See `VERIFICATION.md` for actual checks, measurements, and remaining limits.
+Run `python -X utf8 -m unittest discover -s tests -v`. See `VERIFICATION.md` for actual checks, measurements, and remaining limits.
 
 This is an image-compression workbench, not an audio/video editor. It has no batch export UI, perceptual-quality model, color-managed workflow, or full-resolution processing beyond the documented working-copy limit. The custom codec is educational and not intended to replace mature JPEG encoders. Bounded input and worker cancellation reduce resource risk; they do not provide an operating-system memory sandbox. Filesystem/image decoding errors can still occur and are reported.
+
+Current lightweight check (Windows, existing Conda base / Python 3.13.5): **39 passed**. No dependency installs, model downloads, live publishing, or heavy datasets were used.
