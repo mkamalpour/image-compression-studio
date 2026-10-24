@@ -6,7 +6,7 @@ import sys
 
 
 def parser():
-    p = argparse.ArgumentParser(description="Media Compression Studio: palettes, JPEG, and DCT experiments. No arguments opens the desktop app.")
+    p = argparse.ArgumentParser(description="Image Compression Studio: palettes, JPEG, and DCT experiments. No arguments opens the desktop app.")
     sub = p.add_subparsers(dest="command")
     for name in ("palette", "jpeg", "dct", "decode", "dataset"):
         cmd = sub.add_parser(name)
@@ -72,7 +72,7 @@ def run_cli(args):
                 files["palette.txt"] = palette_text(result["palette"]).encode("utf-8")
                 files["indices.txt"] = out.getvalue().encode("utf-8")
             reports.append({"result": name, "settings": result["settings"], "metrics": result["metrics"], "statistics": result["stats"], "steps": result["steps"]})
-        files["report.json"] = json_bytes({"application": "Media Compression Studio", "import": imported, "working_size": [rgb.shape[1],rgb.shape[0]], "results": reports,
+        files["report.json"] = json_bytes({"application": "Image Compression Studio", "import": imported, "working_size": [rgb.shape[1],rgb.shape[0]], "results": reports,
                                            "notes": ["Processing and metrics use the imported working image, resized for sources over 2 million pixels.", "PSNR null means identical pixels.", "Ratios compare raw RGB with full encoded files; coefficient ratios are not file compression."]})
     destination.mkdir()  # Exclusive creation protects prior output and the input folder.
     created = []
@@ -104,7 +104,7 @@ def main(argv=None):
             run_cli(args)
         return 0
     except (OSError, ValueError, RuntimeError, ImportError) as exc:
-        print(f"Media Compression Studio: {exc}", file=sys.stderr)
+        print(f"Image Compression Studio: {exc}", file=sys.stderr)
         return 2
 
 

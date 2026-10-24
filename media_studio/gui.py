@@ -21,7 +21,7 @@ STRATEGIES = {"Adaptive (recommended)": "adaptive", "Most frequent RGB (classic)
 class Studio:
     def __init__(self, root):
         self.root = root
-        root.title("Media Compression Studio")
+        root.title("Image Compression Studio")
         root.geometry("1280x900")
         root.minsize(1000, 760)
         self.sessions = []
@@ -62,7 +62,7 @@ class Studio:
     def _build(self):
         header = tk.Frame(self.root, bg="#15273e", padx=16, pady=8)
         header.pack(fill="x")
-        tk.Label(header, text="Media Compression Studio", font=("Segoe UI", 18, "bold"), bg="#15273e", fg="white").pack(side="left")
+        tk.Label(header, text="Image Compression Studio", font=("Segoe UI", 18, "bold"), bg="#15273e", fg="white").pack(side="left")
         top = ttk.Frame(self.root, padding=(12, 8))
         top.pack(fill="x")
         ttk.Button(top, text="Open image  Ctrl+O", command=self.open_image, style="Accent.TButton").pack(side="left")
@@ -526,7 +526,7 @@ Ctrl+O: open image | Escape: cancel job | F1: help
             self.store_result(f"DCT {result['settings']['kept_coefficients']} / 64", result, "dct")
 
     def open_stream(self):
-        path = filedialog.askopenfilename(parent=self.root, title="Decode an educational MCS stream", filetypes=[("Media Compression Studio", "*.mcs")])
+        path = filedialog.askopenfilename(parent=self.root, title="Decode an educational MCS stream", filetypes=[("Image Compression Studio", "*.mcs")])
         if path:
             self.start("decode", {"path": path}, lambda rgb: self.add_image(rgb, "Decoded: " + Path(path).name))
 
@@ -695,7 +695,7 @@ Ctrl+O: open image | Escape: cancel job | F1: help
         text.configure(state="disabled")
 
     def report(self, result):
-        return {"application": "Media Compression Studio", "source": self.session["name"],
+        return {"application": "Image Compression Studio", "source": self.session["name"],
                 "width": self.session["rgb"].shape[1], "height": self.session["rgb"].shape[0],
                 "import": self.session.get("import_info"), "result": result["name"], "settings": result["settings"], "metrics": result["metrics"],
                 "statistics": result["stats"], "steps": result["steps"],
@@ -764,11 +764,11 @@ Ctrl+O: open image | Escape: cancel job | F1: help
 
     def error(self, message):
         self.status.set(str(message))
-        messagebox.showerror("Media Compression Studio", str(message), parent=self.root)
+        messagebox.showerror("Image Compression Studio", str(message), parent=self.root)
 
     def close(self):
         if any(s["results"] for s in self.sessions):
-            if not messagebox.askyesno("Close Media Compression Studio", "Close and discard in-memory results? Saved exports are kept.", parent=self.root):
+            if not messagebox.askyesno("Close Image Compression Studio", "Close and discard in-memory results? Saved exports are kept.", parent=self.root):
                 return
         self.cancel(silent=True)
         self.root.destroy()

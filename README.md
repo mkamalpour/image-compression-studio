@@ -1,6 +1,10 @@
-# Media Compression Studio
+# Image Compression Studio
 
-A Python desktop workbench for reducing image colors, saving standard JPEGs, and exploring transform compression. It combines and improves the palette and JPEG/DCT ideas from two multimedia projects, with practical fast defaults instead of requiring assignment-style algorithms for everyday use.
+Try smaller palettes and JPEG settings, compare the image quality, and save the version you prefer. The desktop app includes an example image and an educational DCT/Huffman codec alongside standard image exports.
+
+## Try it first
+
+Use the built-in image first. Try **Use image-specific palette**, then **Compress & compare** to inspect the size and quality difference. Open your own image when ready and save the output separately from the original.
 
 ## Start on Windows
 
@@ -13,8 +17,8 @@ Activate an existing environment with NumPy, Pillow, and Tkinter before launchin
 Manual setup:
 
 ```powershell
-conda activate base  # Or activate another existing compatible environment.
-# Optional dependency setup; requires explicit permission and connectivity.
+conda activate base  # Or use your existing compatible environment.
+# Install dependencies if they are not already available in your environment.
 python -m pip install -r requirements.txt
 python -m media_studio
 ```
@@ -97,4 +101,4 @@ Run `python -X utf8 -m unittest discover -s tests -v`. See `VERIFICATION.md` for
 
 This is an image-compression workbench, not an audio/video editor. It has no batch export UI, perceptual-quality model, color-managed workflow, or full-resolution processing beyond the documented working-copy limit. The custom codec is educational and not intended to replace mature JPEG encoders. Bounded input and worker cancellation reduce resource risk; they do not provide an operating-system memory sandbox. Filesystem/image decoding errors can still occur and are reported.
 
-Current lightweight check (Windows, existing Conda base / Python 3.13.5): **39 passed**. No dependency installs, model downloads, live publishing, or heavy datasets were used.
+Checked on Windows with Python 3.13.5 (Conda base): **39 tests passed**.
