@@ -1,5 +1,6 @@
 """Cancellable, time-bounded processing; child processes never touch Tk widgets."""
 
+import math
 import multiprocessing as mp
 from pathlib import Path
 import queue
@@ -60,17 +61,32 @@ def _run(task, args, output):
 
 class Job:
     def __init__(self, task, args, timeout=120):
+        if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or not math.isfinite(timeout) or timeout <= 0:
+            raise ValueError("Processing timeout must be a positive finite number of seconds.")
+        self.timeout = timeout
+        self.closed = False
         ctx = mp.get_context("spawn")
         self.messages = ctx.Queue(maxsize=16)
         self.process = ctx.Process(target=_run, args=(task, args, self.messages), daemon=True)
         self.deadline = time.monotonic() + timeout
         self.dead_polls = 0
-        self.process.start()
+        try:
+            self.process.start()
+        except BaseException:
+            if self.process.pid is not None:
+                self.close()
+            else:
+                self.messages.close()
+                self.messages.cancel_join_thread()
+                self.closed = True
+            raise
 
     def poll(self):
+        if self.closed:
+            raise RuntimeError("The processing job is closed.")
         if time.monotonic() > self.deadline:
             self.close()
-            raise TimeoutError("Processing exceeded 120 seconds. Try a smaller image or dataset.")
+            raise TimeoutError(f"Processing exceeded {self.timeout:g} seconds. Try a smaller image or dataset.")
         found = []
         while len(found) < 16:
             try:
@@ -86,6 +102,9 @@ class Job:
         return found
 
     def close(self):
+        if self.closed:
+            return
+        self.closed = True
         if self.process.is_alive():
             self.process.terminate()
         self.process.join(timeout=1)

@@ -37,6 +37,8 @@ def rgb_array(value):
 
 
 def read_image(path, background="white", max_pixels=MAX_PIXELS, resize=True):
+    if type(max_pixels) is not int or not 1 <= max_pixels <= MAX_PIXELS:
+        raise ValueError(f"Working pixel limit must be an integer from 1 to {MAX_PIXELS:,}.")
     if background not in {"white", "black", "ignore"}:
         raise ValueError("Choose white, black, or ignore for transparency.")
     path = Path(path)
