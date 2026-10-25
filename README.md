@@ -1,5 +1,7 @@
 # Image Compression Studio
 
+**[Explore the interactive project presentation](docs/overview.html)** — open locally in your browser; works offline.
+
 Try smaller palettes and JPEG settings, compare the image quality, and save the version you prefer. The desktop app includes an example image and an educational DCT/Huffman codec alongside standard image exports.
 
 ## Try it first
