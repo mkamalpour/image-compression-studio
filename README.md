@@ -11,16 +11,18 @@ Use the built-in image first. Try **Use image-specific palette**, then **Compres
 <details>
 <summary>Using the existing managed Windows workspace</summary>
 
-Assigned environment: **base** — Python **3.13.5**, using the existing Conda environment `base`. Open `Workspaces/image-compression-studio.code-workspace` from the workspace folder to select its interpreter.
-
-From this repository folder in PowerShell:
+Assigned environment: **base**. From this repository folder in PowerShell:
 
 ```powershell
-& '..\Launchers\image-compression-studio.cmd' --check --deep
-& '..\Launchers\image-compression-studio.cmd'
+.\run.cmd --check
+.\run.cmd
 ```
 
-The launcher activates the assigned environment and checks dependencies. It does not install packages or download models. These launchers belong to the managed parent workspace; for a standalone clone, follow the setup instructions below in your own compatible environment. Keep optional model/provider prerequisites separate from the offline examples.
+The repo-local launcher selects `G:\AnaConda\install`
+and imports required startup modules. It installs nothing and downloads
+no models. On a standalone clone where that interpreter is absent, it uses your
+active `python`; activate a compatible environment first. `--check` reports the
+actual interpreter; it does not validate optional models or every workflow.
 
 </details>
 
@@ -122,3 +124,6 @@ This is an image-compression workbench, not an audio/video editor. It has no bat
 Checked on Windows with Python 3.13.5 (Conda base): **43 tests passed** with the non-GUI suite and GUI workflows run in fresh activated processes. Repeated Tk interpreter creation in one batch remains intermittently unstable on this Windows runtime; this is not claimed fixed.
 
 Worker setup failures release their queues, cancellation is repeatable, and invalid timeout or working-pixel budgets fail before allocating work.
+
+See the [engineering audit](docs/ENGINEERING_AUDIT.md) for the dated test baseline,
+project assessment, environment assignment and remaining work.
