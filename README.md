@@ -119,6 +119,6 @@ Run `python -X utf8 -m unittest discover -s tests -v`. See `VERIFICATION.md` for
 
 This is an image-compression workbench, not an audio/video editor. It has no batch export UI, perceptual-quality model, color-managed workflow, or full-resolution processing beyond the documented working-copy limit. The custom codec is educational and not intended to replace mature JPEG encoders. Bounded input and worker cancellation reduce resource risk; they do not provide an operating-system memory sandbox. Filesystem/image decoding errors can still occur and are reported.
 
-Checked on Windows with Python 3.13.5 (Conda base): **43 tests passed**.
+Checked on Windows with Python 3.13.5 (Conda base): **43 tests passed** with the non-GUI suite and GUI workflows run in fresh activated processes. Repeated Tk interpreter creation in one batch remains intermittently unstable on this Windows runtime; this is not claimed fixed.
 
 Worker setup failures release their queues, cancellation is repeatable, and invalid timeout or working-pixel budgets fail before allocating work.

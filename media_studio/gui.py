@@ -306,7 +306,7 @@ FILES, PRIVACY AND LIMITS
 
 Up to 8 open images and the newest 16 results across them; older results are removed from memory. Export anything you need to keep. Source photos up to 50 million pixels are accepted; large imports become a labelled working copy of at most 2 million pixels. All processing, dimensions, quality scores and exports refer to that working copy. Adaptive datasets accept high-resolution photos using bounded thumbnails. Dataset: at most 200 files and 60 million processed pixels. Input/stream files: 64 MiB. One cancellable job runs in an isolated process with a 120-second timeout. Cancel or Escape stops it; original files and previous results remain safe.
 Transparency is flattened over white or black, or explicitly ignored, on import. EXIF orientation is applied; source metadata is dropped. Only still images are supported. Color profiles are not transformed; comparisons use decoded RGB values.
-Exports refuse to overwrite existing files: choose a new name. No user images or datasets are bundled, uploaded or automatically saved. Setup downloads dependencies; processing itself is local. Closing an image discards in-memory results; export anything you want to keep.
+Exports refuse to overwrite existing files: choose a new name. No user images or datasets are bundled, uploaded or automatically saved. The launcher uses your existing environment and installs nothing; processing is local. Closing an image discards in-memory results; export anything you want to keep.
 The educational MCS format uses a bounded JSON header, canonical Huffman data and SHA-256 integrity check. It is not a standard JPEG and does not load Python objects or pickle files.
 
 SHORTCUTS
