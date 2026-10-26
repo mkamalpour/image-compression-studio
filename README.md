@@ -127,3 +127,9 @@ Worker setup failures release their queues, cancellation is repeatable, and inva
 
 See the [engineering audit](docs/ENGINEERING_AUDIT.md) for the dated test baseline,
 project assessment, environment assignment and remaining work.
+
+## Additional workflow improvements
+
+GUI and CLI reports identify exact RGB working/result pixels with dimension-aware SHA-256 fingerprints. Desktop initialization failures now produce setup guidance; GUI tests reuse one interpreter with fresh widgets instead of repeatedly reinitializing Tcl.
+
+Export a JSON/text report in the desktop app, or inspect report.json from a headless command. Fingerprints identify decoded working pixels, not source-file bytes.

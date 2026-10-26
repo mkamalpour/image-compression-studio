@@ -7,7 +7,7 @@ from tkinter.scrolledtext import ScrolledText
 
 import numpy as np
 
-from .images import demo_image, metric_text, write_new, json_bytes
+from .images import demo_image, metric_text, write_new, json_bytes, pixel_fingerprint
 from .palettes import read_palette, palette_text
 from .transforms import block_details, quant_tables, ZIGZAG
 from .jobs import Job
@@ -696,6 +696,8 @@ Ctrl+O: open image | Escape: cancel job | F1: help
 
     def report(self, result):
         return {"application": "Image Compression Studio", "source": self.session["name"],
+                "working_pixels_sha256": pixel_fingerprint(self.session['rgb']),
+                "result_pixels_sha256": pixel_fingerprint(result['image']),
                 "width": self.session["rgb"].shape[1], "height": self.session["rgb"].shape[0],
                 "import": self.session.get("import_info"), "result": result["name"], "settings": result["settings"], "metrics": result["metrics"],
                 "statistics": result["stats"], "steps": result["steps"],
@@ -704,6 +706,8 @@ Ctrl+O: open image | Escape: cancel job | F1: help
     def text_report(self, result):
         report = self.report(result)
         lines = [report["application"], report["source"], f"Working image: {report['width']} x {report['height']}", result["name"], metric_text(result["metrics"])]
+        lines += [f"Working pixels SHA-256: {report['working_pixels_sha256']}",
+                  f"Result pixels SHA-256: {report['result_pixels_sha256']}"]
         if report["import"]:
             info = report["import"]
             lines += [f"Source dimensions: {info['original_size'][0]} x {info['original_size'][1]}",

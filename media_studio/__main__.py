@@ -30,7 +30,7 @@ def parser():
 
 
 def run_cli(args):
-    from .images import read_image, png_bytes, json_bytes, write_new, MAX_FILE_BYTES
+    from .images import read_image, png_bytes, json_bytes, write_new, MAX_FILE_BYTES, pixel_fingerprint
     from .palettes import quantize, dataset_palette, read_palette, palette_text
     from .codec import compress, standard_jpeg, decode, coefficient_study
     destination = Path(args.output)
@@ -71,8 +71,10 @@ def run_cli(args):
                 np.savetxt(out, result["indices"], fmt="%d", delimiter="\t")
                 files["palette.txt"] = palette_text(result["palette"]).encode("utf-8")
                 files["indices.txt"] = out.getvalue().encode("utf-8")
-            reports.append({"result": name, "settings": result["settings"], "metrics": result["metrics"], "statistics": result["stats"], "steps": result["steps"]})
+            reports.append({"result": name, "settings": result["settings"], "metrics": result["metrics"], "statistics": result["stats"], "steps": result["steps"],
+                            'result_pixels_sha256': pixel_fingerprint(result['image'])})
         files["report.json"] = json_bytes({"application": "Image Compression Studio", "import": imported, "working_size": [rgb.shape[1],rgb.shape[0]], "results": reports,
+                                           'working_pixels_sha256': pixel_fingerprint(rgb),
                                            "notes": ["Processing and metrics use the imported working image, resized for sources over 2 million pixels.", "PSNR null means identical pixels.", "Ratios compare raw RGB with full encoded files; coefficient ratios are not file compression."]})
     destination.mkdir()  # Exclusive creation protects prior output and the input folder.
     created = []
@@ -99,7 +101,12 @@ def main(argv=None):
     try:
         if args.command is None:
             from .gui import launch
-            launch()
+            import tkinter as tk
+            try:
+                launch()
+            except tk.TclError as exc:
+                raise RuntimeError('Desktop initialization failed. Activate the existing base environment and retry run.cmd. '
+                                   'Tcl/Tk must be readable in that environment. The headless CLI remains available; nothing was installed.') from exc
         else:
             run_cli(args)
         return 0

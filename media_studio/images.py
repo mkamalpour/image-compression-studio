@@ -92,6 +92,16 @@ def metric_text(values):
     return f"MSE {values['mse']:.3f} | PSNR " + ("identical pixels" if psnr is None else f"{psnr:.2f} dB")
 
 
+def pixel_fingerprint(image):
+    """Identify exact RGB working pixels independent of source filename/codec."""
+    import hashlib
+    array = rgb_array(image)
+    digest = hashlib.sha256()
+    digest.update(f'RGB:{array.shape[1]}x{array.shape[0]}:uint8:'.encode('ascii'))
+    digest.update(np.ascontiguousarray(array).tobytes())
+    return digest.hexdigest()
+
+
 def png_bytes(array, palette=None):
     if palette is None:
         image = Image.fromarray(rgb_array(array))

@@ -26,7 +26,7 @@ VS Code's local interpreter settings were aligned with the same assignment.
 
 ## Verification
 
-- **Automated tests:** 43 passed.
+- **Automated tests:** 45 passed; 0 reported skips; 0 private-report cases deselected.
 - **Startup check:** `run.cmd --check` passed from outside the repository;
   required startup modules were imported in the assigned environment.
 - **Tested runtime:** Windows; Conda base; Python 3.13.5.
@@ -58,3 +58,17 @@ for quality. These are proposed upgrades, not implemented features or measured s
 External assets: No external model is needed; a shareable image corpus is useful for measured comparisons.
 
 No root license file is set. No license was selected or changed.
+
+## Additional implementation pass
+
+GUI and CLI reports identify exact RGB working/result pixels with dimension-aware SHA-256 fingerprints. Desktop initialization failures now produce setup guidance; GUI tests reuse one interpreter with fresh widgets instead of repeatedly reinitializing Tcl.
+
+Use: Export a JSON/text report in the desktop app, or inspect report.json from a headless command. Fingerprints identify decoded working pixels, not source-file bytes.
+
+Verification: the complete offline suite passed in the assigned **base**
+environment after this change (45 tests). Regression fixtures remain
+temporary/synthetic. Optional real-model/data quality and external integrations
+remain unverified. No packages, models or additional environments were installed.
+
+The earlier numeric scores are subjective historical assessments; new features do
+not automatically establish a higher score or production readiness.

@@ -19,8 +19,19 @@ from media_studio.images import demo_image
 
 
 class GuiTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        # A desktop session owns one Tcl interpreter. Repeated destruction and
+        # reinitialization can intermittently fail while sourcing Conda's Tk
+        # library on Windows; recreate widgets, not the interpreter, per test.
+        cls.root = tk.Tk()
+        cls.root.withdraw()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.root.destroy()
+
     def setUp(self):
-        self.root=tk.Tk()
         self.root.withdraw()
         self.app=Studio(self.root)
         self.tmp=tempfile.TemporaryDirectory()
@@ -32,7 +43,14 @@ class GuiTests(unittest.TestCase):
 
     def tearDown(self):
         self.app.cancel(silent=True)
-        self.root.destroy()
+        for callback in self.root.tk.call('after', 'info'):
+            # Leave each command registered with its owning widget; destroying
+            # that widget removes it once. Root.after_cancel would delete a
+            # widget-owned command before the widget's own cleanup.
+            self.root.tk.call('after', 'cancel', callback)
+        for child in self.root.winfo_children():
+            child.destroy()
+        self.root.update_idletasks()
         self.patcher.stop()
         self.tmp.cleanup()
 
